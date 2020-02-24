@@ -12,8 +12,16 @@
     <div class="post-content" v-html="markdown(content)"></div>
 
     <div class="post-comment">
-      <comment-form></comment-form>
-      <comment-list :comments="commentsList"></comment-list>
+      <template v-if="!this.$store.state.isAuth">
+        <p class="no-comment">
+          Please <nuxt-link to="/login">log in</nuxt-link> or
+          <nuxt-link to="/register">register</nuxt-link> to add comments.
+        </p>
+      </template>
+      <template v-else>
+        <comment-form></comment-form>
+        <comment-list :comments="commentsList"></comment-list>
+      </template>
     </div>
   </div>
 </template>
@@ -99,5 +107,11 @@ export default {
 
 .post-comment {
   margin-top: 30px;
+}
+
+.no-comment {
+  margin-bottom: 0;
+  margin-top: 20px;
+  text-align: center;
 }
 </style>

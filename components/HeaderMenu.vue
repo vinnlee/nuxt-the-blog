@@ -27,6 +27,12 @@
       </a-menu-item>
     </template>
     <template v-else>
+      <a-menu-item key="newpost">
+        <nuxt-link to="/article/new">
+          <a-icon type="form" />
+          New post
+        </nuxt-link>
+      </a-menu-item>
       <a-menu-item key="setting">
         <nuxt-link to="/setting">
           <a-icon type="setting" theme="filled" />
@@ -35,7 +41,7 @@
       </a-menu-item>
       <a-menu-item key="signout">
         <a-button type="link" class="signout" icon="logout" @click="signOut">
-          Sign Out
+          Log Out
         </a-button>
       </a-menu-item>
     </template>
@@ -54,11 +60,17 @@ export default {
         case '/register':
           key = 'register'
           break
-        case '/':
-          key = 'home'
+        case '/article':
+          key = 'article'
+          break
+        case '/article/new':
+          key = 'newpost'
+          break
+        case '/setting':
+          key = 'setting'
           break
         default:
-          key = 'article'
+          key = 'home'
           break
       }
       return key

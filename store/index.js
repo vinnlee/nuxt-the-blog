@@ -81,6 +81,11 @@ export const actions = {
       .put(this.$axios, '/user', user, context.getters.authHeader)
       .then((data) => context.commit('updateUser', data.user))
   },
+  setUserArticle(context, article) {
+    return requests
+      .post(this.$axios, '/articles', article, context.getters.authHeader)
+      .then((data) => this.$router.push(`/article/${data.article.slug}`))
+  },
   nuxtServerInit({ commit }, { req }) {
     if (req.headers.cookie) {
       const cookie = Cookie.parse(req.headers.cookie)

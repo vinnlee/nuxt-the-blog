@@ -30,11 +30,15 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['ant-design-vue/dist/antd.css'],
+  css: ['ant-design-vue/dist/antd.css', 'simplemde/dist/simplemde.min.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui', '@/plugins/axios'],
+  plugins: [
+    '@/plugins/antd-ui',
+    '@/plugins/axios',
+    { src: '@/plugins/simplemde.js', mode: 'client' }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
