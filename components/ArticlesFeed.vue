@@ -25,8 +25,14 @@
           {{ article.tagList }}
         </span>
       </template>
-      <a-list-item-meta :description="article.author.username">
-        <nuxt-link slot="title" :to="article.slug">
+      <a-list-item-meta>
+        <template slot="description">
+          by
+          <nuxt-link :to="`/profile/@${article.author.username}`">
+            {{ article.author.username }}
+          </nuxt-link>
+        </template>
+        <nuxt-link slot="title" :to="`/${article.slug}`">
           {{ article.title }}
         </nuxt-link>
         <a-avatar slot="avatar" size="large" :src="article.author.avatar" />
@@ -67,7 +73,7 @@ export default {
           date: new Date(article.updatedAt).toLocaleDateString(),
           favoritesCount: article.favoritesCount,
           author: {
-            username: `by ${article.author.username}`,
+            username: article.author.username,
             avatar: article.author.image
           }
         }

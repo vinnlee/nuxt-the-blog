@@ -27,12 +27,11 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchAllArticles(context) {
-    return requests.get(
-      this.$axios,
-      '/articles?limit=70',
-      context.getters.authHeader
-    )
+  fetchAllArticles(context, author = null) {
+    const endPoint = !author
+      ? '/articles?limit=70'
+      : `/articles?author=${author}&?limit=70`
+    return requests.get(this.$axios, endPoint, context.getters.authHeader)
   },
   fetchSingleArticle(context, slug) {
     return requests.get(
@@ -75,6 +74,13 @@ export const actions = {
   },
   fetchUserInfo(context) {
     return requests.get(this.$axios, '/user', context.getters.authHeader)
+  },
+  fetchUserProfile(context, username) {
+    return requests.get(
+      this.$axios,
+      `/profiles/${username}`,
+      context.getters.authHeader
+    )
   },
   setUserInfo(context, user) {
     return requests
