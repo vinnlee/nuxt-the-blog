@@ -6,6 +6,31 @@
       <icon-text type="calendar" :text="date" />
       <icon-text type="star" theme="filled" :text="favoritesCount" />
       <icon-text type="tags" theme="filled" :text="tagList" />
+      <template
+        v-if="
+          this.$store.state.isAuth && username === $store.state.user.username
+        "
+      >
+        <nuxt-link
+          :to="`/article/edit/${$route.params.slug}`"
+          class="edit-article"
+        >
+          <icon-text
+            type="edit"
+            text="Edit"
+            :tooltip="true"
+            tooltip-title="Edit this article."
+          />
+        </nuxt-link>
+        <span class="delete-article">
+          <icon-text
+            type="delete"
+            text="Delete"
+            :tooltip="true"
+            tooltip-title="Delete this article."
+          />
+        </span>
+      </template>
     </div>
 
     <!-- eslint-disable-next-line vue/no-v-html -->
@@ -113,5 +138,12 @@ export default {
   margin-bottom: 0;
   margin-top: 20px;
   text-align: center;
+}
+
+.edit-article,
+.delete-article {
+  color: inherit;
+  cursor: pointer;
+  margin-right: 20px;
 }
 </style>
