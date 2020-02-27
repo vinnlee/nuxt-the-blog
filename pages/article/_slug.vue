@@ -1,5 +1,10 @@
 <template>
   <div class="post-entry">
+    <a-alert
+      v-if="this.$store.state.isAuth && deleted"
+      message="This article is now deleted. but you can continue to view it 😋."
+      banner
+    />
     <h2 class="post-title">{{ title }}</h2>
     <div class="post-meta">
       <icon-text type="user" :text="username" />
@@ -8,7 +13,9 @@
       <icon-text type="tags" theme="filled" :text="tagList" />
       <template
         v-if="
-          this.$store.state.isAuth && username === $store.state.user.username
+          this.$store.state.isAuth &&
+            username === this.$store.state.user.username &&
+            !deleted
         "
       >
         <nuxt-link
@@ -22,7 +29,7 @@
             tooltip-title="Edit this article."
           />
         </nuxt-link>
-        <span class="delete-article">
+        <span class="delete-article" @click="deleteArticle">
           <icon-text
             type="delete"
             text="Delete"
@@ -37,15 +44,15 @@
     <div class="post-content" v-html="markdown(content)"></div>
 
     <div class="post-comment">
-      <template v-if="!this.$store.state.isAuth">
+      <template v-if="this.$store.state.isAuth">
+        <comment-form v-if="!deleted"></comment-form>
+        <comment-list :comments="commentsList"></comment-list>
+      </template>
+      <template v-else>
         <p class="no-comment">
           Please <nuxt-link to="/login">log in</nuxt-link> or
           <nuxt-link to="/register">register</nuxt-link> to add comments.
         </p>
-      </template>
-      <template v-else>
-        <comment-form></comment-form>
-        <comment-list :comments="commentsList"></comment-list>
       </template>
     </div>
   </div>
@@ -82,6 +89,11 @@ export default {
       commentsList: comments
     }
   },
+  data() {
+    return {
+      deleted: false
+    }
+  },
   methods: {
     markdown(content) {
       const md = new Showdown.Converter({
@@ -92,6 +104,15 @@ export default {
         simpleLineBreaks: true
       })
       return md.makeHtml(content)
+    },
+    deleteArticle() {
+      return this.$store
+        .dispatch('deleteUserArticle', this.$route.params.slug)
+        .then(() => {
+          this.$nextTick(function() {
+            this.deleted = true
+          })
+        })
     }
   }
 }

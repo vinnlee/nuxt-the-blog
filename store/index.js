@@ -102,6 +102,13 @@ export const actions = {
       )
       .then((data) => this.$router.push(`/article/${data.article.slug}`))
   },
+  deleteUserArticle(context, slug) {
+    return requests.delete(
+      this.$axios,
+      `/articles/${slug}`,
+      context.getters.authHeader
+    )
+  },
   nuxtServerInit({ commit }, { req }) {
     if (req.headers.cookie) {
       const cookie = Cookie.parse(req.headers.cookie)
